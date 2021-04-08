@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
-import { Canvas, useFrame } from "react-three-fiber";
+import { Canvas, useFrame, useLoader } from "react-three-fiber";
+import * as THREE from "three";
 
 function MenuBox(props) {
   const mesh = useRef();
@@ -7,6 +8,7 @@ function MenuBox(props) {
   const [active, setActive] = useState(false);
   useFrame(() => {
     mesh.current.rotation.y += 0.01;
+    // mesh.current.geometry.center();
   });
 
   return (
@@ -24,6 +26,8 @@ function MenuBox(props) {
         attach="material"
         color={hovered ? "#f06595" : "#845ef7"}
       />
+      {/* <textGeometry attach="geometry" args={["three.js", textOptions]} />
+      <meshStandardMaterial attach="material" args={[{ map: getTexture() }]} color={hovered ? "#f06595" : "#845ef7"}/> */}
     </mesh>
   );
 }

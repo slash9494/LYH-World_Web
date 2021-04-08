@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import MenuBox from "./MenuBox";
 import { Canvas, useFrame } from "react-three-fiber";
+import GridGround from "./GridGround";
+import ReactTypingEffect from "react-typing-effect";
+import TechStack from "./TechStack";
+import Projects from "./Projects";
+import shoppingWeb from "../images/shopping-web.gif";
+import Flash from "react-reveal/Flash";
+import Zoom from "react-reveal/Zoom";
 
 const AppContainer = styled.div`
   position: fixed;
@@ -29,7 +36,6 @@ const ContentsBox = styled.div`
   height: 100vh;
   transform-style: preserve-3d;
   border: 3px solid yellow;
-  transform: translateZ(-500vw);
 `;
 const Wall = styled.div`
   position: absolute;
@@ -37,7 +43,7 @@ const Wall = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.8);
+  /* background: rgba(255, 255, 255, 0.8); */
 `;
 
 const LeftWall = styled(Wall)`
@@ -60,11 +66,29 @@ const ContextsContainer = styled.div`
   font-size: 10em;
 `;
 
-const MenuContainer = styled.div`
-  position: relative;
-  width: 20%;
-  z-index: 1;
-  transform-style: preserve-3d;
+// const MenuContainer = styled.div`
+//   position: relative;
+//   width: 20%;
+//   z-index: 1;
+//   transform-style: preserve-3d;
+// `;
+
+export const StyledText = styled.div`
+  font-family: "Audiowide", cursive;
+  color: rgb(0, 237, 223);
+  font-size: 5vw;
+  transform: translate3d(0, 0, 300px);
+  text-align: center;
+`;
+
+const FixedText = styled(StyledText)`
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3vw;
 `;
 
 function Home() {
@@ -72,7 +96,10 @@ function Home() {
   const [scorllvalue, setScrollValue] = useState(0);
   const [XRotateValue, setXRotateValue] = useState(0);
   const [YRotateValue, setYRotateValue] = useState(0);
+  const [scrollDirection, setScrollDirection] = useState(false);
+  const [openScreen, setOpenScreen] = useState(false);
   const currentScrollValue = (window.pageYOffset / scorllvalue) * 1000 - 500;
+
   function resizeHandler() {
     setScrollValue(
       document.documentElement.scrollHeight -
@@ -81,13 +108,28 @@ function Home() {
     console.log("playResize", scorllvalue);
   }
   function scrollHandler() {
+    window.onscroll = function (e) {
+      let directionValue = this.oldScroll >= this.pageYOffset;
+      this.oldScroll = this.pageYOffset;
+      setScrollDirection(directionValue);
+    };
+
     setMoveZPosition(currentScrollValue);
-    console.log(scorllvalue);
+    console.log(scrollDirection);
   }
   function mousemoveHandler(e) {
     setXRotateValue((e.clientX / window.innerWidth) * 2 - 1);
     setYRotateValue(1 - (e.clientY / window.innerHeight) * 2);
   }
+
+  function toggleOpenScreen(value) {
+    setOpenScreen(value);
+  }
+
+  function toggleCloseScreen(value) {
+    setOpenScreen(value);
+  }
+
   useEffect(() => {
     window.addEventListener("mousemove", mousemoveHandler);
     return () => window.removeEventListener("mousemove", mousemoveHandler);
@@ -104,15 +146,45 @@ function Home() {
     window.addEventListener("scroll", scrollHandler);
     return () => window.removeEventListener("scroll", scrollHandler);
   }, [moveZPosition]);
-
+  // useEffect(() => {
+  //   if (scrollDirection === false) {
+  //     if (window.pageYOffset === 0) {
+  //       return;
+  //     } else if (window.pageYOffset <= 500) {
+  //       window.scrollTo({ top: 500, behavior: "smooth" });
+  //     } else if (window.pageYOffset > 500 && window.pageYOffset <= 1000) {
+  //       window.scrollTo({ top: 1000, behavior: "smooth" });
+  //     } else if (window.pageYOffset > 1000 && window.pageYOffset <= 1522) {
+  //       window.scrollTo({ top: 1522, behavior: "smooth" });
+  //     }
+  //   }
+  //   if (scrollDirection === true) {
+  //     if (window.pageYOffset > 0 && window.pageYOffset <= 500) {
+  //       window.scrollTo({ top: 0, behavior: "smooth" });
+  //     } else if (window.pageYOffset <= 1000) {
+  //       window.scrollTo({ top: 500, behavior: "smooth" });
+  //     } else if (window.pageYOffset <= 1500) {
+  //       window.scrollTo({ top: 1000, behavior: "smooth" });
+  //     }
+  //   }
+  // }, [window.pageYOffset, scrollDirection]);
+  const canvasStyle = {
+    width: "50%",
+    height: "100vh",
+  };
+  console.log(window.pageYOffset, window.innerHeight);
+  console.log(window.innerWidth);
   return (
     <AppContainer>
-      <MenuContainer>
-        <Canvas>
+      <Canvas camera={{ position: [0, 0, 15] }}>
+        <GridGround />
+      </Canvas>
+      {/* <MenuContainer>
+        <Canvas style={canvasStyle}>
           <ambientLight intensity={1} />
           <MenuBox position={[-1.2, 0, 0]} />
         </Canvas>
-      </MenuContainer>
+      </MenuContainer> */}
       <Ground
         style={{
           transform: `rotateY(${XRotateValue * 10}deg) rotateX(${
@@ -121,19 +193,80 @@ function Home() {
         }}
       >
         <ContentsBox style={{ transform: `translateZ(${moveZPosition}vw)` }}>
-          <LeftWall></LeftWall>
-          <RightWall />
           <Wall style={{ transform: `translateZ(${450}vw)` }}>
-            <ContextsContainer>Hello</ContextsContainer>
+            <ContextsContainer>
+              <StyledText>
+                <Zoom>
+                  어서오세요.
+                  <br />
+                  LEE YUN HYEON{" "}
+                </Zoom>
+              </StyledText>
+            </ContextsContainer>
           </Wall>
-          <Wall style={{ transform: `translateZ(${250}vw)` }}>
-            <ContextsContainer>CoCa</ContextsContainer>
+          <Wall style={{ transform: `translateZ(${100}vw)` }}>
+            <ContextsContainer>
+              {window.pageYOffset >= 400 ? (
+                <StyledText>
+                  <ReactTypingEffect
+                    text={[
+                      "FrontEnd Developer 이윤현입니다. 저의 사이트를 방문해주셔서 감사합니다.",
+                      "색다르고 신선한 웹개발을 추구하며, 이와 더불어 단단하고 안전성있는 웹을 구축하기 위해 노력하고 있습니다.",
+                      "발전하는 기술 트렌드는 저의 원동력이 되어 항상 새로운 환경에 도전합니다.",
+                    ]}
+                    speed={100}
+                    eraseSpeed={50}
+                    eraseDelay={200}
+                    typingDelay={100}
+                  />
+                </StyledText>
+              ) : null}
+            </ContextsContainer>
           </Wall>
-          <Wall style={{ transform: `translateZ(${-100}vw)` }}>
-            <ContextsContainer>LetGo</ContextsContainer>
+          <Wall
+            style={{
+              transform: `translateZ(${-175}vw)`,
+            }}
+          >
+            {window.pageYOffset >= 800 ? (
+              <ContextsContainer>
+                <TechStack />
+
+                <FixedText>
+                  <Zoom>Tech Stacks</Zoom>
+                </FixedText>
+              </ContextsContainer>
+            ) : null}
           </Wall>
-          <Wall style={{ transform: `translateZ(${-450}vw)` }}>
-            <ContextsContainer>ZIZI</ContextsContainer>
+          {window.pageYOffset >= 1400 && openScreen === true ? (
+            <>
+              <Flash>
+                <LeftWall>
+                  <StyledText
+                    style={{
+                      marginLeft: "995vw",
+                    }}
+                  >
+                    <img src={shoppingWeb} alt="shopping-web" />
+                  </StyledText>
+                </LeftWall>
+                <RightWall />
+              </Flash>
+            </>
+          ) : null}
+          <Wall style={{ transform: `translateZ(${-500}vw)` }}>
+            {window.pageYOffset >= 1500 ? (
+              <ContextsContainer>
+                <Projects
+                  openScreen={toggleOpenScreen}
+                  closeScreen={toggleCloseScreen}
+                />
+
+                <FixedText>
+                  <Zoom>Projects</Zoom>{" "}
+                </FixedText>
+              </ContextsContainer>
+            ) : null}
           </Wall>
         </ContentsBox>
       </Ground>
