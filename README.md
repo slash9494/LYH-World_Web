@@ -1,3 +1,3 @@
 # LYH-World-Web
 
-## (https://lyhworld.cf/)
+## (http://lyhworld.cf/)
