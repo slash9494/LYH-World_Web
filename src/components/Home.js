@@ -151,7 +151,7 @@ function Home() {
   useEffect(() => {
     window.addEventListener("scroll", scrollHandler);
     return () => window.removeEventListener("scroll", scrollHandler);
-  }, [moveZPosition]);
+  }, [moveZPosition, scrollHandler]);
 
   return (
     <>
@@ -197,7 +197,7 @@ function Home() {
                     alignItems: "flex-start",
                   }}
                 >
-                  <Fade top delay="1300" duration="500">
+                  <Fade top delay="1000" duration="500">
                     Welcome
                   </Fade>
                 </FixedText>
