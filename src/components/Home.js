@@ -101,7 +101,6 @@ function Home() {
   const [YRotateValue, setYRotateValue] = useState(0);
   const [openScreen, setOpenScreen] = useState(false);
   const [showLine, setShowLine] = useState(false);
-  const currentScrollValue = (window.pageYOffset / scorllvalue) * 1000 - 500;
   function resizeHandler() {
     setScrollValue(
       document.documentElement.scrollHeight -
@@ -109,6 +108,7 @@ function Home() {
     );
   }
   function scrollHandler() {
+    const currentScrollValue = (window.pageYOffset / scorllvalue) * 1000 - 500;
     const delayedExec = function (after, fn) {
       let timer;
       return function () {
@@ -151,7 +151,8 @@ function Home() {
   useEffect(() => {
     window.addEventListener("scroll", scrollHandler);
     return () => window.removeEventListener("scroll", scrollHandler);
-  }, [moveZPosition, scrollHandler]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [moveZPosition]);
 
   return (
     <>
