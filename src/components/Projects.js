@@ -95,7 +95,7 @@ function Projects(props) {
         </Fade>
       </TextContainer>
       <TextContainer>
-        <Fade delay="2000">
+        <Fade delay="1500">
           <StyledText
             style={{ textAlign: "end", fontSize: "2vw", color: "white" }}
           >
