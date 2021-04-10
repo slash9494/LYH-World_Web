@@ -1,6 +1,6 @@
 # LYH-World_web
 
-[LYH](http://lyhworld.cf/)
+[GO TO LYHWORLD](http://lyhworld.cf/)
 
 # 🌐 3차원 방식의 레이아웃 구성
 
