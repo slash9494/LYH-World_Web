@@ -94,6 +94,14 @@ const GoHomeText = styled(FixedText)`
   top: 0;
 `;
 
+const PageIndicator = styled.div`
+  width: 20vw;
+  height: 100vh;
+  border-top: 3px solid yellow;
+  border-bottom: 3px solid yellow;
+  position: fixed;
+`;
+
 function Home() {
   const [moveZPosition, setMoveZPosition] = useState(-500);
   const [scorllvalue, setScrollValue] = useState(0);
@@ -153,7 +161,6 @@ function Home() {
     return () => window.removeEventListener("scroll", scrollHandler);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [moveZPosition]);
-
   return (
     <>
       <AppContainer>
@@ -209,7 +216,8 @@ function Home() {
             </Wall>
             <Wall style={{ transform: `translateZ(${100}vw)` }}>
               <ContextsContainer>
-                {window.pageYOffset >= 400 ? (
+                {window.pageYOffset >= 400 ? <PageIndicator /> : null}
+                {window.pageYOffset >= 1100 ? (
                   <StyledText>
                     <ReactTypingEffect
                       text={[
@@ -231,15 +239,19 @@ function Home() {
                 transform: `translateZ(${-175}vw)`,
               }}
             >
-              {window.pageYOffset >= 800 ? (
-                <ContextsContainer>
-                  <TechStack />
-
-                  <FixedText>
-                    <Zoom>Tech Stacks</Zoom>
-                  </FixedText>
-                </ContextsContainer>
-              ) : null}
+              <ContextsContainer>
+                {window.pageYOffset >= 1880 && window.pageYOffset < 2500 ? (
+                  <PageIndicator style={{ height: "40vh" }} />
+                ) : null}
+                {window.pageYOffset >= 2200 ? (
+                  <>
+                    <TechStack />
+                    <FixedText>
+                      <Zoom>Tech Stacks</Zoom>
+                    </FixedText>
+                  </>
+                ) : null}
+              </ContextsContainer>
             </Wall>
             {window.pageYOffset >= 1400 && openScreen === true ? (
               <>
@@ -258,7 +270,7 @@ function Home() {
               </>
             ) : null}
             <Wall style={{ transform: `translateZ(${-500}vw)` }}>
-              {window.pageYOffset >= 1300 ? (
+              {window.pageYOffset >= 3400 ? (
                 <ContextsContainer>
                   <Projects
                     openScreen={toggleOpenScreen}
